@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Тема дня</title>
+    <link>http://residential.ru.msn.com/</link>
+    <description>Новости жилой недвижимости</description>
+    <language>ru-ru</language>
+    <item>
+      <title>В США опубликовали список самых жутких городов мира</title>
+      <link>http://residential.ru.msn.com/analytics/62967</link>
+      <guid isPermaLink="true">http://residential.ru.msn.com/analytics/62967</guid>
+      <description>В США опубликовали список самых жутких городов мира</description>
+      <enclosure type="image/jpeg" length="1000" url="http://residential.ru.msn.com/images/content/msn_realty/analytics/2012/10/10/image001.jpg"/>
+      <pubDate>2012-10-10T13:37:00</pubDate>
+    </item>
+    <item>
+      <title>В Индии опубликовали список самых жутких городов мира</title>
+      <link>http://residential.ru.msn.com/analytics/62967/link2/</link>
+      <guid isPermaLink="true">http://residential.ru.msn.com/analytics/62967</guid>
+      <description>В США опубликовали список самых жутких городов мира</description>
+      <enclosure type="image/jpeg" length="1000" url="http://residential.ru.msn.com/images/content/msn_realty/analytics/2012/10/10/image001.jpg"/>
+      <pubDate>2012-10-10T13:37:00</pubDate>
+    </item>
+  </channel>
+</rss>

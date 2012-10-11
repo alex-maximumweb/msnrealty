@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Окт 10 2012 г., 16:21
+-- Время создания: Окт 11 2012 г., 21:11
 -- Версия сервера: 5.5.27
 -- Версия PHP: 5.3.15
 
@@ -23,37 +23,45 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `exportfeeds`
+--
+
+CREATE TABLE IF NOT EXISTS `exportfeeds` (
+  `exportfeed_id` int(11) NOT NULL AUTO_INCREMENT,
+  `exportfeed_name` varchar(50) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`exportfeed_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- Дамп данных таблицы `exportfeeds`
+--
+
+INSERT INTO `exportfeeds` (`exportfeed_id`, `exportfeed_name`) VALUES
+(1, 'Фид для слайда на главной недвижимости');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
   `link_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` int(11) NOT NULL,
+  `provider_feed_id` int(11) NOT NULL,
   `link_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `image_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `link_title` text COLLATE utf8_bin NOT NULL,
   `linkdatetime` varchar(40) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
 
 --
--- Структура таблицы `modules`
+-- Дамп данных таблицы `links`
 --
 
-CREATE TABLE IF NOT EXISTS `modules` (
-  `module_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_name` varchar(50) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`module_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
-
---
--- Дамп данных таблицы `modules`
---
-
-INSERT INTO `modules` (`module_id`, `module_name`) VALUES
-(1, 'Слайд на главной');
+INSERT INTO `links` (`link_id`, `provider_feed_id`, `link_url`, `image_url`, `link_title`, `linkdatetime`) VALUES
+(9, 0, 'http://residential.ru.msn.com/analytics/62967', 'http://residential.ru.msn.com/images/content/msn_realty/analytics/2012/10/10/image001.jpg', 'В США опубликовали список самых жутких городов мира', '2012-10-10T13:37:00'),
+(10, 0, 'http://residential.ru.msn.com/analytics/62967/link2/', 'http://residential.ru.msn.com/images/content/msn_realty/analytics/2012/10/10/image001.jpg', 'В Индии опубликовали список самых жутких городов мира', '2012-10-10T13:37:00');
 
 -- --------------------------------------------------------
 
@@ -87,14 +95,15 @@ CREATE TABLE IF NOT EXISTS `provider_feeds` (
   `feed_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `feed_title` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`feed_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `provider_feeds`
 --
 
 INSERT INTO `provider_feeds` (`feed_id`, `provider_id`, `feed_url`, `feed_title`) VALUES
-(1, 1, 'http://residential.ru.msn.com/api/day_theme', 'Новости для слайда');
+(1, 1, 'http://residential.ru.msn.com/api/day_theme', 'Новости для слайда'),
+(2, 1, 'http://realtylinks/feedtest.xml', 'тестовый фид');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
