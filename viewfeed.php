@@ -2,7 +2,14 @@
 	include_once($_SERVER['DOCUMENT_ROOT']."/config.inc.php");
 	dbconnect();
 
-	$sql = "
+	//reading settings for current RSS from the database
+	$sql = mysql_query("SELECT items_total FROM export_feeds");
+	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC) ) {
+		$_PRESETS['items_total'] = $row['items_total'];
+	}
+	
+	//selecting links of input RSS feeds to be combined
+	$sql = mysql_query("
 		SELECT feeds_mapping.export_feed_id, export_feeds.exportfeed_name, feeds_mapping.provider_feed_id, provider_feeds.feed_id, provider_feeds.feed_url  
 		FROM feeds_mapping 
 		INNER JOIN provider_feeds 
@@ -10,8 +17,7 @@
 		INNER JOIN export_feeds 
 		ON export_feeds.exportfeed_id = feeds_mapping.export_feed_id 
 		WHERE feeds_mapping.export_feed_id = '".$_GET['feedid']."'
-	";
-	$sql = mysql_query($sql);
+	");
 	
 	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC) ) {
 		$feeds[] = $row['feed_url'];
@@ -19,7 +25,7 @@
 	
 	$i = 0; //just an array counter
 	$total_links = 0; //total quantity of links in all incoming RSS feeds
-	$max = 20; //maximum amount of links in export RSS feed (should be get from DB later)
+	$max_links = $_PRESETS['items_total']; //maximum amount of links in export RSS feed (should be get from DB later)
 	
 	foreach( $feeds as $key=>$value ) {
 		$xml = simplexml_load_file( $value );
@@ -38,16 +44,22 @@
 		$i++;
 	}
 	
-	$total_input_RSS = $i;
+	$total_input_RSS = $i; //just figuring out the total amount of input RSS feeds (also can be obtained from the database)
+	$export_link_counter = 0; //counter for limiting total links in RSS feed
 	
+	//starting to generate array of result items for RSS feed
 	for( $i = 0; $i < $total_links; $i++ ) {
 		for ( $j = 0; $j < $total_input_RSS; $j++ ) {
 			if( !empty( $_RSS_PREPARE[$j][$i] ) ) {
-				$_RSS_EXPORT[] = $_RSS_PREPARE[$j][$i];				
+				if( $export_link_counter < $max_links ) {
+					$_RSS_EXPORT[] = $_RSS_PREPARE[$j][$i];				
+					$export_link_counter++;
+				}
 			}
 		}
 	}
 
+	//showing the RSS feed from the array
 	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 	echo "<rss version=\"2.0\">";
 	echo "<channel>";
