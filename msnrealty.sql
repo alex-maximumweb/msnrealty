@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Окт 12 2012 г., 14:54
+-- Время создания: Окт 12 2012 г., 19:32
 -- Версия сервера: 5.5.28
 -- Версия PHP: 5.2.17
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `export_feeds` (
   `exportfeed_id` int(11) NOT NULL AUTO_INCREMENT,
   `exportfeed_name` varchar(50) NOT NULL,
+  `items_total` int(11) NOT NULL,
   PRIMARY KEY (`exportfeed_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -36,8 +37,8 @@ CREATE TABLE IF NOT EXISTS `export_feeds` (
 -- Дамп данных таблицы `export_feeds`
 --
 
-INSERT INTO `export_feeds` (`exportfeed_id`, `exportfeed_name`) VALUES
-(1, 'Фид для слайда на главной недвижимости');
+INSERT INTO `export_feeds` (`exportfeed_id`, `exportfeed_name`, `items_total`) VALUES
+(1, 'Фид для слайда на главной недвижимости', 4);
 
 -- --------------------------------------------------------
 
