@@ -1,6 +1,6 @@
 <?
 	include_once($_SERVER['DOCUMENT_ROOT']."/config.inc.php");
-	
+	include_once($_PATH['include']."/header.inc.php");
 	dbconnect();
 	
 	echo "<h2>Список фидов провайдера</h2>";
@@ -10,4 +10,5 @@
 	}	
 	
 	mysql_close();
+	include_once($_PATH['include']."/footer.inc.php");
 ?>

@@ -1,5 +1,5 @@
 <?
-	$_PATH['include'] = $_SERVER['DOCUMENT_ROOT']."/include";
+	$_PATH['include'] = $_SERVER['DOCUMENT_ROOT']."/inc";
 	
 	function dbconnect() {
 		$mysql_connect = mysql_connect( 
