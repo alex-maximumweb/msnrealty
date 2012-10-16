@@ -1,5 +1,5 @@
 <?
-	include_once($_SERVER['DOCUMENT_ROOT']."/config.inc.php");
+	include_once("config.inc.php");
 	include_once($_PATH['include']."/header.inc.php");
 	dbconnect();
 	
@@ -9,7 +9,7 @@
 	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC)) {
 		echo 
 		"<li class=\"dropdown\">
-			<a href=\"/providers.php?providerid=".$row['provider_id']."\">
+			<a href=\"".$_URL['siteroot']."/providers.php?providerid=".$row['provider_id']."\">
 				".$row['provider_name']."
 			</a> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"icon-cog\"></i></a>
 			<ul class=\"dropdown-menu\">
@@ -26,11 +26,11 @@
 	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC)) {
 		echo "
 		<li class=\"dropdown\">
-			<a href=\"/viewfeed.php?feedid=".$row['exportfeed_id']."\">
-				".$row['exportfeed_name']."</a> <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"icon-cog\"></i></a>
+			<a href=\"".$_URL['siteroot']."/viewfeed.php?feedid=".$row['exportfeed_id']."\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">
+				".$row['exportfeed_name']."<i class=\"icon-cog\" style=\"margin-left: 5px;\"></i></a>
 			<ul class=\"dropdown-menu\">
-				<li><a href=\"#text_view\" /><i class=\"icon-list\"></i> Посмотреть как таблица</a></li>
-				<li><a href=\"#text_view\" /><i class=\"icon-file\"></i> Посмотреть как XML</a></li>				
+				<li><a href=\"".$_URL['siteroot']."/viewfeed.php?feedid=".$row['exportfeed_id']."&viewtype=table\" /><i class=\"icon-list\"></i> Посмотреть как таблицу</a></li>
+				<li><a href=\"".$_URL['siteroot']."/viewfeed.php?feedid=".$row['exportfeed_id']."\" /><i class=\"icon-file\"></i> Посмотреть как RSS</a></li>				
 			</ul>
 		</li>
 		";

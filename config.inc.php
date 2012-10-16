@@ -1,6 +1,8 @@
 <?
 	$_PATH['include'] = $_SERVER['DOCUMENT_ROOT']."/inc";
 	
+	$_URL['siteroot'] = "";
+	
 	function dbconnect() {
 		$mysql_connect = mysql_connect( 
 			"localhost", 

@@ -1,5 +1,5 @@
 <?
-	include_once($_SERVER['DOCUMENT_ROOT']."/config.inc.php");
+	include_once("config.inc.php");
 	include_once($_PATH['include']."/header.inc.php");
 	dbconnect();
 	

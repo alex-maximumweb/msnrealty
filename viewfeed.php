@@ -1,16 +1,17 @@
 <?
-	include_once($_SERVER['DOCUMENT_ROOT']."/config.inc.php");
+	include_once("config.inc.php");
 	dbconnect();
 
 	//reading settings for current RSS from the database
-	$sql = mysql_query("SELECT items_total FROM export_feeds");
+	$sql = mysql_query("SELECT items_total, exportfeed_name FROM export_feeds");
 	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC) ) {
 		$_PRESETS['items_total'] = $row['items_total'];
+		$_PRESETS['feed_title'] = $row['exportfeed_name'];
 	}
 	
 	//selecting links of input RSS feeds to be combined
 	$sql = mysql_query("
-		SELECT feeds_mapping.export_feed_id, export_feeds.exportfeed_name, feeds_mapping.provider_feed_id, provider_feeds.feed_id, provider_feeds.feed_url  
+		SELECT feeds_mapping.export_feed_id, export_feeds.exportfeed_name, feeds_mapping.provider_feed_id, provider_feeds.feed_id, provider_feeds.feed_url, provider_feeds.feed_title, provider_feeds.provider_id  
 		FROM feeds_mapping 
 		INNER JOIN provider_feeds 
 		ON provider_feeds.feed_id = feeds_mapping.provider_feed_id 
@@ -20,14 +21,16 @@
 	");
 	
 	while( $row = mysql_fetch_array($sql, MYSQL_ASSOC) ) {
-		$feeds[] = $row['feed_url'];
+		$feeds['urls'][] = $row['feed_url'];
+		$feeds['titles'][] = $row['feed_title'];
+		$feeds['providerids'][] = $row['provider_id'];
 	}
 	
 	$i = 0; //just an array counter
 	$total_links = 0; //total quantity of links in all incoming RSS feeds
 	$max_links = $_PRESETS['items_total']; //maximum amount of links in export RSS feed (should be get from DB later)
-	
-	foreach( $feeds as $key=>$value ) {
+
+	foreach( $feeds['urls'] as $key=>$value ) {
 		$xml = simplexml_load_file( $value );
 		$j = 0;
 		foreach( $xml->channel->item as $item ) {
@@ -59,27 +62,67 @@
 		}
 	}
 
-	//showing the RSS feed from the array
-	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
-	echo "<rss version=\"2.0\">";
-	echo "<channel>";
-	echo "<title>MSN Combine Feed</title>";
-	echo "<link>http://ru.msn.com/</link>";
-	echo "<description></description>";
+	switch( $_GET['viewtype'] ) {
+		case 'table':
+			include_once( $_PATH['include']."/header.inc.php");
+			echo "<h3>".$_PRESETS['feed_title']."</h3>";
+			echo "&larr; <a href=\"".$_URL['siteroot']."/\">К списку фидов</a> | <a href=\"".$_URL['siteroot']."viewfeed.php?feedid=".$_GET['feedid']."\">Посмотреть как RSS</a>";
+			echo "<h5>Настройки выходного фида</h5>";
+			echo "<ul>";
+				echo "<li>Название: &laquo;".$_PRESETS['feed_title']."&raquo;</li>";
+				echo "<li>Количество материалов: ".$_PRESETS['items_total']."</li>";
+			echo "</ul>";
+			echo "<h5>Ссылки провайдеров</h5>";
+			echo "<ul>";			
+			foreach( $feeds['urls'] as $key => $value ) {
+					echo "<li><a href=\"".$value."\" target=\"_blank\">".$value."</a> &mdash; <a href=\"/providers.php?providerid=".$feeds['providerids'][$key]."\">".$feeds['titles'][$key]."</a></li>";
+			}
+			echo "</ul>";
+			echo "<h5>Содержимое фида</h5>";			
+			echo "
+				<table class='table table-condensed'>
+			";
+			foreach( $_RSS_EXPORT as $key => $value ) {
+				echo "
+					<tr>
+						<td style=\"width: 120px\"><a href=\"".$value['link']."\" target=\"_blank\"><img src=\"".$value['image']."\" style=\"width: 100px;\"/></a></td>
+						<td>
+							<a href=\"".$value['link']."\" target=\"_blank\">".$value['title']."</a><br/>
+							<small>".$value['pubdate']."</small><br/>
+							<small>".$value['description']."</small>
+						</td>
+					</tr>
+				";
+			}
+
+			echo "
+				</table>
+			";
+			include_once( $_PATH['include']."/footer.inc.php");
+		break;
+		default:
+			//showing the RSS feed from the array
+			echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+			echo "<rss version=\"2.0\">";
+			echo "<channel>";
+			echo "<title>MSN Combine Feed</title>";
+			echo "<link>http://ru.msn.com/</link>";
+			echo "<description></description>";
+			
+			foreach( $_RSS_EXPORT as $key => $value ) {
+				echo "<item>";
+				echo "<title>".$value['title']."</title>";
+				echo "<link>".$value['link']."</link>";
+				echo "<guid isPermaLink=\"true\">".$value['link']."</guid>";
+				echo "<description>".$value['description']."</description>";
+				echo "<enclosure length=\"".$value['imagelength']."\" type=\"".$value['imagetype']."\" url=\"".$value['image']."\"></enclosure>";
+				echo "<pubDate>".$value['pubdate']."</pubDate>";
+				echo "</item>";		
+			}	
+			
+			echo "</channel>";
+			echo "</rss>";		
+	}
 	
-	foreach( $_RSS_EXPORT as $key => $value ) {
-		echo "<item>";
-		echo "<title>".$value['title']."</title>";
-		echo "<link>".$value['link']."</link>";
-		echo "<guid isPermaLink=\"true\">".$value['link']."</guid>";
-		echo "<description>".$value['description']."</description>";
-		echo "<enclosure length=\"".$value['imagelength']."\" type=\"".$value['imagetype']."\"></enclosure>";
-		echo "<pubDate>".$value['pubdate']."</pubDate>";
-		echo "</item>";		
-	}	
-	
-	echo "</channel>";
-	echo "</rss>";
-		
 	mysql_close();
 ?>
