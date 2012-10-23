@@ -66,7 +66,7 @@
 		case 'table':
 			include_once( $_PATH['include']."/header.inc.php");
 			echo "<h3>".$_PRESETS['feed_title']."</h3>";
-			echo "&larr; <a href=\"".$_URL['siteroot']."/\">К списку фидов</a> | <a href=\"".$_URL['siteroot']."viewfeed.php?feedid=".$_GET['feedid']."\">Посмотреть как RSS</a>";
+			echo "&larr; <a href=\"".$_URL['siteroot']."/\">К списку фидов</a> | <a href=\"".$_URL['siteroot']."./viewfeed.php?feedid=".$_GET['feedid']."\">Посмотреть как RSS</a>";
 			echo "<h5>Настройки выходного фида</h5>";
 			echo "<ul>";
 				echo "<li>Название: &laquo;".$_PRESETS['feed_title']."&raquo;</li>";
@@ -77,6 +77,7 @@
 			foreach( $feeds['urls'] as $key => $value ) {
 					echo "<li><a href=\"".$value."\" target=\"_blank\">".$value."</a> &mdash; <a href=\"/providers.php?providerid=".$feeds['providerids'][$key]."\">".$feeds['titles'][$key]."</a></li>";
 			}
+			echo "<li><a href='#add-feed' button' class='btn btn-primary' data-toggle='modal' />Добавить фид</a></li>";
 			echo "</ul>";
 			echo "<h5>Содержимое фида</h5>";			
 			echo "
@@ -95,8 +96,21 @@
 				";
 			}
 
+			echo "</table>";
 			echo "
-				</table>
+				<div class='modal fade' id='add-feed'>
+				  <div class='modal-header'>
+				    <a class='close' data-dismiss='modal'>&times;</a>
+				    <h3>Выберите фид из списка</h3>
+				  </div>
+				  <div class='modal-body'>
+				    <p></p>
+				  </div>
+				  <div class='modal-footer'>
+				    <a href='#' class='btn' data-dismiss='modal'>Close</a>
+				    <a href='#' class='btn btn-primary'>Save Changes</a>
+				  </div>
+				</div>'
 			";
 			include_once( $_PATH['include']."/footer.inc.php");
 		break;

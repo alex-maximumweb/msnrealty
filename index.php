@@ -18,6 +18,7 @@
 			</ul>
 		</li>";
 	}
+	echo "<li><a href='#add-provider' button' class='btn btn-primary' data-toggle='modal' />Добавить провайдера</a></li>";
 	echo "</ul>";
 	
 	$sql = mysql_query("SELECT * FROM `export_feeds`");
@@ -52,7 +53,28 @@
     <a href="#" class="btn btn-primary">Save Changes</a>
   </div>
 </div>
-
+<div class="modal fade" id="add-provider">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h3>Добавить провайдера</h3>
+	</div>
+	<div class="modal-body">
+		<form method="POST" action="changeprovider.php" id="createproviderform">
+		<p><input type="text" name="providername" /></p>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Отмена</a>
+		<a href="#" class="btn btn-primary" id="createproviderbutton">Создать</a>
+	</div>
+</div>
+<script>
+	$( function() {
+		$('#createproviderbutton').click( function() {
+			$( '#createproviderform' ).submit();
+		});
+	});
+</script>
 <?
 	include_once($_PATH['include']."/footer.inc.php");
 ?>
