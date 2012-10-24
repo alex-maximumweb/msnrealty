@@ -105,11 +105,11 @@
 				    <h3>Выберите фид из списка</h3>
 				  </div>
 				  <div class='modal-body'>
-				    <p></p>
+					<div id='feedlist'>фид</div>
 				  </div>
 				  <div class='modal-footer'>
-				    <a href='#' class='btn' data-dismiss='modal'>Close</a>
-				    <a href='#' class='btn btn-primary'>Save Changes</a>
+				    <a href='#' class='btn' data-dismiss='modal'>Отмена</a>
+				    <a href='#' class='btn btn-primary'>Добавить</a>
 				  </div>
 				</div>'
 			";
