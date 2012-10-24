@@ -66,20 +66,21 @@
 		case 'table':
 			include_once( $_PATH['include']."/header.inc.php");
 			echo "<h3>".$_PRESETS['feed_title']."</h3>";
-			echo "&larr; <a href=\"".$_URL['siteroot']."/\">К списку фидов</a> | <a href=\"".$_URL['siteroot']."./viewfeed.php?feedid=".$_GET['feedid']."\">Посмотреть как RSS</a>";
-			echo "<h5>Настройки выходного фида</h5>";
+			echo "&larr; <a href=\"".$_URL['siteroot']."/\">К списку фидов</a> | <a href=\"".$_URL['siteroot']."/viewfeed.php?feedid=".$_GET['feedid']."\">Посмотреть как RSS</a>";
+			echo "<h5>Настройки исходящего фида</h5>";
 			echo "<ul>";
 				echo "<li>Название: &laquo;".$_PRESETS['feed_title']."&raquo;</li>";
 				echo "<li>Количество материалов: ".$_PRESETS['items_total']."</li>";
+				echo "<li><a href='#' class='btn' data-toggle='modal'>Изменить настройки</a></li>";
 			echo "</ul>";
-			echo "<h5>Ссылки провайдеров</h5>";
+			echo "<h5>Список входящих фидов</h5>";
 			echo "<ul>";			
 			foreach( $feeds['urls'] as $key => $value ) {
 					echo "<li><a href=\"".$value."\" target=\"_blank\">".$value."</a> &mdash; <a href=\"/providers.php?providerid=".$feeds['providerids'][$key]."\">".$feeds['titles'][$key]."</a></li>";
 			}
-			echo "<li><a href='#add-feed' button' class='btn btn-primary' data-toggle='modal' />Добавить фид</a></li>";
+			echo "<li><a href='#add-feed' class='btn' data-toggle='modal' />Добавить фид</a></li>";
 			echo "</ul>";
-			echo "<h5>Содержимое фида</h5>";			
+			echo "<h5>Содержимое исходящего фида</h5>";			
 			echo "
 				<table class='table table-condensed'>
 			";
